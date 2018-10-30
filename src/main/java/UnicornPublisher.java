@@ -23,7 +23,6 @@ public class UnicornPublisher {
         String topicId = "unicornTopic";
 
         ProjectTopicName topicName = ProjectTopicName.of(PROJECT_ID, topicId);
-        Publisher publisher = null;
         List<ApiFuture<String>> futures = new ArrayList<>();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -33,32 +32,32 @@ public class UnicornPublisher {
 
         List<Unicorn> unicorns = Arrays.asList(shadowFax, happyMcFabulous);
 
-        try {
-            // Create a publisher instance with default settings bound to the topic
-            publisher = Publisher.newBuilder(topicName).build();
+        Publisher publisher = Publisher.newBuilder(topicName).build();
 
-            for (Unicorn unicorn : unicorns) {
-                // convert message to bytes
-                ByteString data = ByteString.copyFromUtf8(mapper.writeValueAsString(unicorn));
-                PubsubMessage pubsubMessage = PubsubMessage.newBuilder()
-                    .setData(data)
-                    .build();
+        while(true) {
+            try {
+                // Create a publisher instance with default settings bound to the topic
+                for (Unicorn unicorn : unicorns) {
+                    unicorn.move();
+                    // convert message to bytes
+                    ByteString data = ByteString.copyFromUtf8(mapper.writeValueAsString(unicorn));
+                    PubsubMessage pubsubMessage = PubsubMessage.newBuilder()
+                        .setData(data)
+                        .build();
 
-                // Schedule a message to be published. Messages are automatically batched.
-                ApiFuture<String> future = publisher.publish(pubsubMessage);
-                futures.add(future);
-            }
-        } finally {
-            // Wait on any pending requests
-            List<String> messageIds = ApiFutures.allAsList(futures).get();
+                    // Schedule a message to be published. Messages are automatically batched.
+                    ApiFuture<String> future = publisher.publish(pubsubMessage);
+                    futures.add(future);
+                    Thread.sleep(5000);
+                }
+            } finally {
+                // Wait on any pending requests
+                List<String> messageIds = ApiFutures.allAsList(futures).get();
+                futures.clear();
 
-            for (String messageId : messageIds) {
-                System.out.println(messageId);
-            }
-
-            if (publisher != null) {
-                // When finished with the publisher, shutdown to free up resources.
-                publisher.shutdown();
+                for (String messageId : messageIds) {
+                    System.out.println(messageId);
+                }
             }
         }
     }
