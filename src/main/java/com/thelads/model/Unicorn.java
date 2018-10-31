@@ -1,3 +1,5 @@
+package com.thelads.model;
+
 import java.time.LocalDateTime;
 import java.util.Random;
 

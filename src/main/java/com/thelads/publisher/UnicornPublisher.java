@@ -1,3 +1,5 @@
+package com.thelads.publisher;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.api.core.ApiFutureCallback;
@@ -8,6 +10,7 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
 
+import com.thelads.model.Unicorn;
 import java.util.Arrays;
 import java.util.List;
 
