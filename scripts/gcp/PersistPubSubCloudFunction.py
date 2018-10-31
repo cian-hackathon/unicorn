@@ -1,7 +1,13 @@
 import base64
 import uuid
+import json
+from datetime import datetime
+from google.cloud import datastore
 
-def hello_pubsub(event, context):
+TIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f'
+
+
+def unicorn_status_change(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
          event (dict): Event payload.
@@ -10,11 +16,8 @@ def hello_pubsub(event, context):
     unicorn_status = base64.b64decode(event['data']).decode('utf-8')
     save_unicorn_status('unicorn-221011', unicorn_status)
 
-def save_unicorn_status(project_id, unicorn_status):
-    # [START datastore_quickstart]
-    # Imports the Google Cloud client library
-    from google.cloud import datastore
 
+def save_unicorn_status(project_id, unicorn_status):
     # Instantiates a client
     datastore_client = datastore.Client(project_id)
 
@@ -27,9 +30,21 @@ def save_unicorn_status(project_id, unicorn_status):
 
     # Prepares the new entity
     task = datastore.Entity(key=task_key)
-    task['status'] = unicorn_status
+
+    data = json.loads(unicorn_status)
+
+    task.update({
+        'name': data['name'],
+        'distance': float(data['distance']),
+        'healthPoints': int(data['healthPoints']),
+        'latitude': float(data['latitude']),
+        'longitude': float(data['longitude']),
+        'magicPoints': int(data['magicPoints']),
+        'statusTime': datetime.strptime(data['statusTime'],
+                                        TIME_FORMAT)
+    })
 
     # Saves the entity
     datastore_client.put(task)
 
-    print('Saved {}: {}'.format(task.key.name, task['status']))
+    print('Saved {}: {}'.format(task.key.name, task['name']))
