@@ -30,6 +30,7 @@ public class Unicorn {
     }
 
     public void move() {
+        this.statusTime = LocalDateTime.now().toString();
         this.healthPoints = nextPoints(healthPoints);
         this.magicPoints = nextPoints(magicPoints);
         double bearing = Math.random() * Math.PI * 2;
