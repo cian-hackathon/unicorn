@@ -18,12 +18,7 @@ public class UnicornPublisher {
     // use the default project id
     private static final String PROJECT_ID = ServiceOptions.getDefaultProjectId();
 
-    /**
-     * Publish messages to a topic.
-     *
-     * @param args topic name, number of messages
-     */
-    public static void main(String[] args) throws Exception {
+    public void run() throws Exception {
         String topicId = "unicornTopic";
 
         ProjectTopicName topicName = ProjectTopicName.of(PROJECT_ID, topicId);
