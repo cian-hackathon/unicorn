@@ -3,6 +3,7 @@ package com.thelads.service;
 import com.thelads.model.Unicorn;
 import com.thelads.model.UnicornCreationRequest;
 import com.thelads.publisher.UnicornPublisher;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,11 @@ public class UnicornService {
             unicornPublisher.addUnicorn(new Unicorn(request.getName(),
                 request.getLatitude(), request.getLongitude()));
         }
+    }
+
+
+    public List<Unicorn> moveUnicorns() {
+        unicornPublisher.getUnicorns().forEach(Unicorn::move);
+        return unicornPublisher.getUnicorns();
     }
 }
