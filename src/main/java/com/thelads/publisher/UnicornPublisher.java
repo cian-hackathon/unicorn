@@ -12,8 +12,8 @@ import com.google.pubsub.v1.PubsubMessage;
 
 import com.thelads.model.Unicorn;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,9 @@ public class UnicornPublisher {
     private static final String PROJECT_ID = ServiceOptions.getDefaultProjectId();
     private static final String TOPIC_ID = "unicornTopic";
 
-    private final List<Unicorn> unicorns = new ArrayList<>();
+    // required to avoid java.util.ConcurrentModificationException when
+    // removing a unicorn
+    private final List<Unicorn> unicorns = new CopyOnWriteArrayList<>();
     private ObjectMapper mapper = new ObjectMapper();
     private Publisher publisher;
 
