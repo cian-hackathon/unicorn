@@ -31,6 +31,17 @@ public class Unicorn {
         this.statusTime = LocalDateTime.now().toString();
     }
 
+    public Unicorn(String name, double distance, int healthPoints,
+        double longitude, double latitude, int magicPoints, String statusTime) {
+        this.name = name;
+        this.distance = distance;
+        this.healthPoints = healthPoints;
+        this.magicPoints = magicPoints;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.statusTime = statusTime;
+    }
+
     public void move() {
         this.statusTime = LocalDateTime.now().toString();
         this.healthPoints = nextPoints(healthPoints);
@@ -114,5 +125,54 @@ public class Unicorn {
 
     public void setStatusTime(String statusTime) {
         this.statusTime = statusTime;
+    }
+
+    public static class Builder{
+        private double distance;
+        private int healthPoints;
+        private double latitude;
+        private double longitude;
+        private int magicPoints;
+        private String name;
+        private String statusTime;
+
+
+        public Builder setDistance(double distance){
+            this.distance = distance;
+            return this;
+        }
+
+        public Builder setHealthPoints(int healthPoints){
+            this.healthPoints = healthPoints;
+            return this;
+        }
+
+        public Builder setLatitude(double latitude){
+            this.latitude = latitude;
+            return this;
+        }
+
+        public Builder setLongitude(double longitude){
+            this.longitude = longitude;
+            return this;
+        }
+
+        public Builder setMagicPoints(int magicPoints){
+            this.magicPoints = magicPoints;
+            return this;
+        }
+
+        public Builder setName(String name){
+            this.name = name;
+            return this;
+        }
+
+        public Builder setStatusTime(String statusTime){
+            this.statusTime = statusTime;
+            return this;
+        }
+
+        public Unicorn build(){return new Unicorn(name, distance, healthPoints,
+            longitude, latitude, magicPoints, statusTime);}
     }
 }
