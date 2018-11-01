@@ -24,13 +24,13 @@ public class UnicornService {
         allTasks.forEachRemaining(entity ->
         {
             unicornList.add(new Unicorn.Builder()
-                .setName(entity.getValue("name").toString())
-                .setDistance(Double.valueOf(entity.getValue("distance").toString()))
-                .setLatitude(Double.valueOf(entity.getValue("latitude").toString()))
-                .setLongitude(Double.valueOf(entity.getValue("longitude").toString()))
-                .setStatusTime(LocalDateTime.now().toString())
-                .setHealthPoints(Integer.valueOf(entity.getValue("healthPoints").toString()))
-                .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").toString())).build());
+                .setName(entity.getValue("name").get().toString())
+                .setDistance(Double.valueOf(entity.getValue("distance").get().toString()))
+                .setLatitude(Double.valueOf(entity.getValue("latitude").get().toString()))
+                .setLongitude(Double.valueOf(entity.getValue("longitude").get().toString()))
+                .setStatusTime(LocalDateTime.parse(entity.getValue("statusTime").get().toString()).toString())
+                .setHealthPoints(Integer.valueOf(entity.getValue("healthPoints").get().toString()))
+                .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").get().toString())).build());
         });
         return unicornList;
     }
