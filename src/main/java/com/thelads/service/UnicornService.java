@@ -51,17 +51,17 @@ public class UnicornService {
         return unicornList;
     }
 
-
     public List<Unicorn> moveUnicorns() {
         unicornPublisher.getUnicorns().forEach(Unicorn::move);
         return unicornPublisher.getUnicorns();
     }
 
     public void removeUnicorn(String name) {
-        unicornPublisher.getUnicorns().forEach(unicorn -> {
-            if (unicorn.getName().equals(name)){
-                unicornPublisher.getUnicorns().remove(unicorn);
-            }
-        });
+        unicornPublisher
+            .getUnicorns()
+            .stream()
+            .filter(unicorn -> unicorn.getName().equals(name))
+            .findFirst()
+            .ifPresent(unicorn -> unicornPublisher.getUnicorns().remove(unicorn));
     }
 }
