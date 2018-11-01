@@ -12,8 +12,8 @@ L.tileLayer(
 
 var myIcon = L.icon({
     iconUrl: 'images/unicon.png',
-    iconSize: [100, 100],
-    iconAnchor: [22, 94],
+    iconSize: [50, 80],
+    iconAnchor: [28, 80],
     popupAnchor: [-3, -76]
 });
 
