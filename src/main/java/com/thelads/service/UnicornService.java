@@ -50,4 +50,10 @@ public class UnicornService {
         });
         return unicornList;
     }
+
+
+    public List<Unicorn> moveUnicorns() {
+        unicornPublisher.getUnicorns().forEach(Unicorn::move);
+        return unicornPublisher.getUnicorns();
+    }
 }

@@ -76,4 +76,8 @@ public class UnicornPublisher {
         }
         unicorns.add(unicorn);
     }
+
+    public List<Unicorn> getUnicorns() {
+        return unicorns;
+    }
 }
