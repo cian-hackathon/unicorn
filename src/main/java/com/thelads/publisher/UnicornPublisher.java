@@ -28,7 +28,7 @@ public class UnicornPublisher {
     private static final String PROJECT_ID = ServiceOptions.getDefaultProjectId();
     private static final String TOPIC_ID = "unicornTopic";
 
-    private static final List<Unicorn> unicorns = new ArrayList<>();
+    private final List<Unicorn> unicorns = new ArrayList<>();
     private ObjectMapper mapper = new ObjectMapper();
     private Publisher publisher;
 
@@ -68,7 +68,12 @@ public class UnicornPublisher {
         }
     }
 
-    public static void addUnicorn(Unicorn unicorn) {
+    public void addUnicorn(Unicorn unicorn) {
+        if (unicorns
+            .stream()
+            .anyMatch(u -> u.getName().equals(unicorn.getName()))) {
+            throw new IllegalArgumentException("Unicorn with the name " + unicorn.getName() + " is already alive.");
+        }
         unicorns.add(unicorn);
     }
 }

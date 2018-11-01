@@ -31,6 +31,16 @@ public class Unicorn {
         this.statusTime = LocalDateTime.now().toString();
     }
 
+    public Unicorn(String name, double latitude, double longitude){
+        this.name = name;
+        this.distance = 0;
+        this.healthPoints = 100;
+        this.magicPoints = 100;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.statusTime = LocalDateTime.now().toString();
+    }
+
     public void move() {
         this.statusTime = LocalDateTime.now().toString();
         this.healthPoints = nextPoints(healthPoints);
