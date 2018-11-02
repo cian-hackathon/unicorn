@@ -95,13 +95,20 @@ $("#next").on("click", function() {
 $("#kill_button").on('click', function() {
 
     var $form = $("#remove-unicorn-form");
-    var data = convertFormToJSON($form);
+    var data = $form.serializeArray()[0].value;
+    console.log(data);
 
     $.ajax({
-        url: "/unicorn/remove" + '?' + $.param("name", data["name"]),
+        url: "/unicorn/remove" + '?name=' + data,
         method: "DELETE",
         success: function (r) {
             console.log(r);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // Request failed. Show error message to user.
+            // errorThrown has error message, or "timeout" in case of timeout.
+            console.log(jqXHR.responseText);
+            alert(errorThrown);
         }
     })
 });
