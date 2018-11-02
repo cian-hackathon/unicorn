@@ -23,24 +23,25 @@
             <h2 class="mdl-card__title-text">Get your own Unicorn!</h2>
         </div>
         <div class="mdl-card__supporting-text">
-            <form action="#">
+            <form action="#" id="add-unicorn-form" name="add-unicorn-form">
                 <div id="name">
                     <div id="phone">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="mobile">
-                            <label class="mdl-textfield__label" for="sample2">Unicorn Name</label>
-                            <span class="mdl-textfield__error">Mobile must be a number!</span>
+                            <input name="name" class="mdl-textfield__input" type="text" id="unicornName">
+                            <label class="mdl-textfield__label">Unicorn Name</label>
                         </div>
                     </div>
                 </div>
                 <div id="geo-location">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="latitude">
-                        <label class="mdl-textfield__label" for="sample3">Latitude</label>
+                        <input name="latitude" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="latitude">
+                        <label class="mdl-textfield__label">Latitude</label>
+                        <span class="mdl-textfield__error">Latitude must be a number!</span>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="longitude">
-                        <label class="mdl-textfield__label" for="sample3">Longitude</label>
+                        <input name="longitude" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="longitude">
+                        <label class="mdl-textfield__label">Longitude</label>
+                        <span class="mdl-textfield__error">Longitude must be a number!</span>
                     </div>
                 </div>
             </form>

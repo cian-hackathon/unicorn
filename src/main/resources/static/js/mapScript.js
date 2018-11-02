@@ -62,5 +62,32 @@ function getUnicorns() {
         }
     });
 }
-
 var interval = self.setInterval(function(){getUnicorns()}, 3000);
+
+function convertFormToJSON($form){
+    var array = $form.serializeArray();
+    var json = {};
+
+    $.each(array, function() {
+        json[this.name] = this.value || '';
+    });
+
+    return JSON.stringify(json);
+}
+
+$("#next").on("click", function() {
+    var $form = $("#add-unicorn-form");
+    var data = convertFormToJSON($form);
+    console.log(data);
+    $.ajax({
+        url: "/unicorn",
+        method: "post",
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        data: data,
+        success: function(r){
+            console.log(r);
+        }
+    });
+    return false; // this one
+});
