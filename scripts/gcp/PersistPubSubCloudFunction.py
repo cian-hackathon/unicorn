@@ -41,7 +41,8 @@ def save_unicorn_status(project_id, unicorn_status):
         'longitude': float(data['longitude']),
         'magicPoints': int(data['magicPoints']),
         'statusTime': datetime.strptime(data['statusTime'],
-                                        TIME_FORMAT)
+                                        TIME_FORMAT),
+        'alive': data['alive']
     })
 
     # Saves the entity
