@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,24 +32,35 @@ public class UnicornService {
     }
 
     public List<Unicorn> getRecentUpdates() {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+        List<String> aliveUnicorns = unicornPublisher.getUnicorns().stream().map(Unicorn::getName)
+            .collect(Collectors.toList());
 
         datastoreQuery = new DatastoreQuery();
         QueryResults<Entity> allTasks = datastoreQuery.listTasks();
         List<Unicorn> unicornList = new ArrayList<>();
         allTasks.forEachRemaining(entity ->
         {
-            unicornList.add(new Unicorn.Builder()
-                .setName(entity.getValue("name").get().toString())
-                .setDistance(Double.valueOf(entity.getValue("distance").get().toString()))
-                .setLatitude(Double.valueOf(entity.getValue("latitude").get().toString()))
-                .setLongitude(Double.valueOf(entity.getValue("longitude").get().toString()))
-                .setStatusTime(
-                    LocalDateTime.parse(entity.getValue("statusTime").get().toString(), formatter).toString())
-                .setHealthPoints(Integer.valueOf(entity.getValue("healthPoints").get().toString()))
-                .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").get().toString())).build());
+            String name = entity.getValue("name").get().toString();
+            if (aliveUnicorns.contains(name)) {
+                addUnicorn(unicornList, entity);
+            }
         });
         return unicornList;
+    }
+
+    private void addUnicorn(List<Unicorn> unicornList, Entity entity) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
+        unicornList.add(new Unicorn.Builder()
+            .setName(entity.getValue("name").get().toString())
+            .setDistance(Double.valueOf(entity.getValue("distance").get().toString()))
+            .setLatitude(Double.valueOf(entity.getValue("latitude").get().toString()))
+            .setLongitude(Double.valueOf(entity.getValue("longitude").get().toString()))
+            .setStatusTime(
+                LocalDateTime.parse(entity.getValue("statusTime").get().toString(), formatter).toString())
+            .setHealthPoints(Integer.valueOf(entity.getValue("healthPoints").get().toString()))
+            .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").get().toString())).build());
     }
 
     public List<Unicorn> moveUnicorns() {
