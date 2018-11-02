@@ -27,9 +27,14 @@ public class UnicornController {
         return unicornService.getRecentUpdates();
     }
 
+    @GetMapping("/alive")
+    List<String> getAliveUnicorns() {
+        return unicornService.getAliveUnicorns();
+    }
+
     @DeleteMapping("/remove")
     @ResponseStatus(HttpStatus.OK)
-    public void removeUnicorn(@RequestParam String name){
+    public void removeUnicorn(@RequestParam String name) {
         unicornService.removeUnicorn(name);
     }
 

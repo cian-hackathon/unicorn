@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,28 +33,33 @@ public class UnicornService {
 
     public List<Unicorn> getRecentUpdates() {
 
+        List<Entity> entityList = getAliveUnicornsWithLatestCoOrdinates();
+        List<Unicorn> unicornList = new ArrayList<>();
+
+        entityList.forEach(entity ->
+            addUnicorn(unicornList, entity));
+
+        return unicornList;
+    }
+
+    private List<Entity> getAliveUnicornsWithLatestCoOrdinates() {
+
+        List<String> distinctNames = new ArrayList<>();
+        List<Entity> entityList = new ArrayList<>();
+
         datastoreQuery = new DatastoreQuery();
         QueryResults<Entity> allTasks = datastoreQuery.listTasks();
-
-        List<Unicorn> unicornList = new ArrayList<>();
-        List<Entity> entityList = new ArrayList<>();
-        List<String> distinctNames = new ArrayList<>();
-
         allTasks.forEachRemaining(entity ->
         {
             if (!distinctNames.contains(entity.getValue("name").get().toString())) {
                 distinctNames.add(entity.getValue("name").get().toString());
-                entityList.add(entity);
+                if (Boolean.valueOf(entity.getValue("alive").get().toString())) {
+                    entityList.add(entity);
+                }
             }
         });
 
-        entityList.forEach(entity -> {
-            if (Boolean.valueOf(entity.getValue("alive").get().toString())) {
-                addUnicorn(unicornList, entity);
-            }
-        });
-
-        return unicornList;
+        return entityList;
     }
 
     private void addUnicorn(List<Unicorn> unicornList, Entity entity) {
@@ -77,5 +83,12 @@ public class UnicornService {
             .filter(unicorn -> unicorn.getName().equals(name))
             .findFirst()
             .ifPresent(unicorn -> unicorn.setAlive(false));
+    }
+
+    public List<String> getAliveUnicorns() {
+        return getAliveUnicornsWithLatestCoOrdinates()
+            .stream()
+            .map(entity -> entity.getValue("name").get().toString())
+            .collect(Collectors.toList());
     }
 }
