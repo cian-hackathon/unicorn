@@ -12,7 +12,7 @@ public class DatastoreQuery {
 
     private final Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-    private static final String TASK_GQL_QUERY = "select distinct on (name) * from Task";
+    private static final String TASK_GQL_QUERY = "select * from Task ORDER BY statusTime DESC";
 
     public QueryResults<Entity> listTasks() {
         GqlQuery<Entity> qry = Query.newGqlQueryBuilder(ResultType.ENTITY, TASK_GQL_QUERY).build();

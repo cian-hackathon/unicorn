@@ -38,14 +38,26 @@ public class UnicornService {
 
         datastoreQuery = new DatastoreQuery();
         QueryResults<Entity> allTasks = datastoreQuery.listTasks();
+
         List<Unicorn> unicornList = new ArrayList<>();
+        List<Entity> entityList = new ArrayList<>();
+        List<String> distinctNames = new ArrayList<>();
+
+
         allTasks.forEachRemaining(entity ->
         {
+            if(!distinctNames.contains(entity.getValue("name").get().toString())){
+                distinctNames.add(entity.getValue("name").get().toString());
+                entityList.add(entity);
+            }
             String name = entity.getValue("name").get().toString();
             if (aliveUnicorns.contains(name)) {
                 addUnicorn(unicornList, entity);
             }
         });
+
+        entityList.forEach(entity -> addUnicorn(unicornList, entity));
+
         return unicornList;
     }
 
