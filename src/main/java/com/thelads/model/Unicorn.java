@@ -13,6 +13,7 @@ public class Unicorn {
     private int magicPoints;
     private String name;
     private String statusTime;
+    private boolean alive;
 
     @JsonIgnore
     private Random random = new Random();
@@ -33,6 +34,7 @@ public class Unicorn {
         this.latitude = 53.3419;
         this.longitude = -6.2827;
         this.statusTime = LocalDateTime.now().toString();
+        this.alive = true;
     }
 
     public Unicorn(String name, double distance, int healthPoints,
@@ -44,6 +46,7 @@ public class Unicorn {
         this.latitude = latitude;
         this.longitude = longitude;
         this.statusTime = statusTime;
+        this.alive = true;
     }
 
     public Unicorn(String name, double latitude, double longitude){
@@ -54,6 +57,7 @@ public class Unicorn {
         this.latitude = latitude;
         this.longitude = longitude;
         this.statusTime = LocalDateTime.now().toString();
+        this.alive = true;
     }
 
     public void move() {
@@ -139,6 +143,14 @@ public class Unicorn {
 
     public void setStatusTime(String statusTime) {
         this.statusTime = statusTime;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public static class Builder{

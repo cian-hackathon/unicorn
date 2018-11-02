@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,9 +32,6 @@ public class UnicornService {
 
     public List<Unicorn> getRecentUpdates() {
 
-        List<String> aliveUnicorns = unicornPublisher.getUnicorns().stream().map(Unicorn::getName)
-            .collect(Collectors.toList());
-
         datastoreQuery = new DatastoreQuery();
         QueryResults<Entity> allTasks = datastoreQuery.listTasks();
 
@@ -43,20 +39,19 @@ public class UnicornService {
         List<Entity> entityList = new ArrayList<>();
         List<String> distinctNames = new ArrayList<>();
 
-
         allTasks.forEachRemaining(entity ->
         {
-            if(!distinctNames.contains(entity.getValue("name").get().toString())){
+            if (!distinctNames.contains(entity.getValue("name").get().toString())) {
                 distinctNames.add(entity.getValue("name").get().toString());
                 entityList.add(entity);
             }
-            String name = entity.getValue("name").get().toString();
-            if (aliveUnicorns.contains(name)) {
+        });
+
+        entityList.forEach(entity -> {
+            if (Boolean.valueOf(entity.getValue("alive").get().toString())) {
                 addUnicorn(unicornList, entity);
             }
         });
-
-        entityList.forEach(entity -> addUnicorn(unicornList, entity));
 
         return unicornList;
     }
@@ -75,17 +70,12 @@ public class UnicornService {
             .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").get().toString())).build());
     }
 
-    public List<Unicorn> moveUnicorns() {
-        unicornPublisher.getUnicorns().forEach(Unicorn::move);
-        return unicornPublisher.getUnicorns();
-    }
-
     public void removeUnicorn(String name) {
         unicornPublisher
             .getUnicorns()
             .stream()
             .filter(unicorn -> unicorn.getName().equals(name))
             .findFirst()
-            .ifPresent(unicorn -> unicornPublisher.getUnicorns().remove(unicorn));
+            .ifPresent(unicorn -> unicorn.setAlive(false));
     }
 }
