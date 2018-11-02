@@ -17,14 +17,14 @@
 </head>
 <body>
 <div id="map"></div>
-<div id="mycard">
+<div class="mycard">
     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
         <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">Get your own Unicorn!</h2>
         </div>
         <div class="mdl-card__supporting-text">
             <form action="#" id="add-unicorn-form" name="add-unicorn-form">
-                <div id="name">
+                <div class="name">
                     <div id="phone">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input name="name" class="mdl-textfield__input" type="text" id="unicornName">
@@ -34,12 +34,14 @@
                 </div>
                 <div id="geo-location">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input name="latitude" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="latitude">
+                        <input name="latitude" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?"
+                               id="latitude">
                         <label class="mdl-textfield__label">Latitude</label>
                         <span class="mdl-textfield__error">Latitude must be a number!</span>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input name="longitude" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="longitude">
+                        <input name="longitude" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?"
+                               id="longitude">
                         <label class="mdl-textfield__label">Longitude</label>
                         <span class="mdl-textfield__error">Longitude must be a number!</span>
                     </div>
@@ -50,6 +52,29 @@
 
     <!-- FAB button with ripple -->
     <div id="next">
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+            <i class="material-icons">arrow_forward</i>
+        </button>
+    </div>
+</div>
+<div class="mycard">
+    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Kill your Unicorn! :(</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+            <form action="#" id="remove-unicorn-form" name="add-unicorn-form">
+                <div class="name">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input name="name" class="mdl-textfield__input" type="text" id="aliveUnicornName">
+                        <label class="mdl-textfield__label">Unicorn Name</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- FAB button with ripple -->
+    <div id="kill_button">
         <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
             <i class="material-icons">arrow_forward</i>
         </button>

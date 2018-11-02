@@ -91,3 +91,17 @@ $("#next").on("click", function() {
     });
     return false; // this one
 });
+
+$("#kill_button").on('click', function() {
+
+    var $form = $("#remove-unicorn-form");
+    var data = convertFormToJSON($form);
+
+    $.ajax({
+        url: "/unicorn/remove" + '?' + $.param("name", data["name"]),
+        method: "DELETE",
+        success: function (r) {
+            console.log(r);
+        }
+    })
+});
