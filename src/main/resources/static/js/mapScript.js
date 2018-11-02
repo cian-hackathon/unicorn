@@ -92,6 +92,27 @@ $("#next").on("click", function() {
     return false; // this one
 });
 
+$("#kill_button").on('click', function() {
+
+    var $form = $("#remove-unicorn-form");
+    var data = $form.serializeArray()[0].value;
+    console.log(data);
+
+    $.ajax({
+        url: "/unicorn/remove" + '?name=' + data,
+        method: "DELETE",
+        success: function (r) {
+            console.log(r);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            // Request failed. Show error message to user.
+            // errorThrown has error message, or "timeout" in case of timeout.
+            console.log(jqXHR.responseText);
+            alert(errorThrown);
+        }
+    })
+});
+
 window.onload = function () {
 
     var l = Snap('#logo');
