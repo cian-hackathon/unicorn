@@ -1,5 +1,6 @@
 package com.thelads.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -12,6 +13,9 @@ public class Unicorn {
     private int magicPoints;
     private String name;
     private String statusTime;
+
+    @JsonIgnore
+    private Random random = new Random();
 
     private static final double LATITUDE_OFFSET = 110540;
     private static final double LONGITUDE_OFFSET = 111320;
@@ -26,8 +30,8 @@ public class Unicorn {
         this.distance = 0;
         this.healthPoints = 100;
         this.magicPoints = 100;
-        this.latitude = -6.2827;
-        this.longitude = 53.3419;
+        this.latitude = 53.3419;
+        this.longitude = -6.2827;
         this.statusTime = LocalDateTime.now().toString();
     }
 
@@ -42,26 +46,36 @@ public class Unicorn {
         this.statusTime = statusTime;
     }
 
+    public Unicorn(String name, double latitude, double longitude){
+        this.name = name;
+        this.distance = 0;
+        this.healthPoints = 100;
+        this.magicPoints = 100;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.statusTime = LocalDateTime.now().toString();
+    }
+
     public void move() {
         this.statusTime = LocalDateTime.now().toString();
         this.healthPoints = nextPoints(healthPoints);
         this.magicPoints = nextPoints(magicPoints);
-        double bearing = Math.random() * Math.PI * 2;
-        double distance =  ( (double) new Random().nextInt(MAX_DISTANCE - MIN_DISTANCE) + MIN_DISTANCE ) + Math.random();
-        this.latitude = nextLatitude(latitude, bearing, distance);
-        this.longitude = nextLongitude(longitude, bearing, distance);
+        double bearing = random.nextInt(360);
+        double distanceToTravel =  ( (double) new Random().nextInt(MAX_DISTANCE - MIN_DISTANCE) + MIN_DISTANCE ) + Math.random();
+        this.distance += distanceToTravel;
+        this.latitude = nextLatitude(latitude, bearing, distanceToTravel);
+        this.longitude = nextLongitude(longitude, bearing, distanceToTravel);
     }
 
     private double nextLatitude(double currentLatitude, double bearing, double distance) {
-        return currentLatitude + distance * Math.sin(bearing) / LATITUDE_OFFSET;
+        return currentLatitude + distance * Math.cos(bearing) / LATITUDE_OFFSET;
     }
 
     private double nextLongitude(double currentLongitude, double bearing, double distance) {
-        return currentLongitude + distance * Math.cos(bearing) / (LONGITUDE_OFFSET * Math.cos(Math.PI * latitude / 100));
+        return currentLongitude + distance * Math.sin(bearing) / LONGITUDE_OFFSET;
     }
 
     private int nextPoints(int points) {
-        Random random = new Random();
         int y = random.nextInt(2);
 
         if (random.nextInt(2) % 2 == 0) {

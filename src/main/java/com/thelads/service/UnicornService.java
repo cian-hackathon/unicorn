@@ -1,20 +1,34 @@
 package com.thelads.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.QueryResults;
 import com.thelads.model.Unicorn;
+import com.thelads.model.UnicornCreationRequest;
+import com.thelads.publisher.UnicornPublisher;
 import com.thelads.util.DatastoreQuery;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UnicornService {
 
-    DatastoreQuery datastoreQuery;
+    @Autowired
+    private UnicornPublisher unicornPublisher;
+
+    private DatastoreQuery datastoreQuery;
+
+    public void createUnicorn(UnicornCreationRequest request) {
+        if (request.getLatitude() == null || request.getLongitude() == null) {
+            unicornPublisher.addUnicorn(new Unicorn(request.getName()));
+        } else {
+            unicornPublisher.addUnicorn(new Unicorn(request.getName(),
+                request.getLatitude(), request.getLongitude()));
+        }
+    }
 
     public List<Unicorn> getRecentUpdates() {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
@@ -45,5 +59,19 @@ public class UnicornService {
             .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").get().toString())).build()));
 
         return unicornList;
+    }
+
+    public List<Unicorn> moveUnicorns() {
+        unicornPublisher.getUnicorns().forEach(Unicorn::move);
+        return unicornPublisher.getUnicorns();
+    }
+
+    public void removeUnicorn(String name) {
+        unicornPublisher
+            .getUnicorns()
+            .stream()
+            .filter(unicorn -> unicorn.getName().equals(name))
+            .findFirst()
+            .ifPresent(unicorn -> unicornPublisher.getUnicorns().remove(unicorn));
     }
 }
