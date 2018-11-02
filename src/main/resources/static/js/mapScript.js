@@ -41,7 +41,7 @@ function getUnicorns() {
                 var health = unicorn["healthPoints"];
                 var magic = unicorn["magicPoints"];
                 var updateTime = unicorn["statusTime"];
-                var marker = L.marker([longitude, latitude], {icon: myIcon});
+                var marker = L.marker([latitude, longitude], {icon: myIcon});
                 var tooltip = L.tooltip({sticky: true});
                 tooltip.setContent(
                     '<b>Name: </b>' + name +
