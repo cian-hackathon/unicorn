@@ -4,6 +4,15 @@
     margin: 0 auto;
 }
 
+#header {
+    position: fixed;
+}
+
+#container {
+    position: fixed;
+    margin-top: 150px;
+}
+
 .demo-card-wide.mdl-card {
     width: 640px;
     height: 300px;
