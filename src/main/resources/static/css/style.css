@@ -1,17 +1,24 @@
-#map { height: 800px; width: 1200px }
+#map {
+    height: 800px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
 .demo-card-wide.mdl-card {
     width: 640px;
     height: 300px;
+}
 
+html,body {
+    padding: 1em 1em;
+    background: #222;
 }
 
 .mdl-card__actions {
-
     outline: skyblue solid 5px;
     z-index: 4;
-
-
 }
+
 #geo-location {
     display:flex;
     margin-top: 10px;
@@ -20,7 +27,6 @@
 
 #name{
     diplay: flex;
-
 }
 
 
