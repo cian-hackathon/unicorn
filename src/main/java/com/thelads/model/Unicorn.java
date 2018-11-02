@@ -30,8 +30,8 @@ public class Unicorn {
         this.distance = 0;
         this.healthPoints = 100;
         this.magicPoints = 100;
-        this.latitude = -6.2827;
-        this.longitude = 53.3419;
+        this.latitude = 53.3419;
+        this.longitude = -6.2827;
         this.statusTime = LocalDateTime.now().toString();
     }
 
