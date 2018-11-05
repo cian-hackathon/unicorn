@@ -89,8 +89,8 @@ public class UnicornService {
             if (unicornByName.isPresent()) {
                 Unicorn unicorn = unicornByName.get();
                 unicorn.setAlive(false);
-                unicornPublisher.getPubSubMessagePublisher().publishMessage(unicorn);
                 unicornPublisher.getUnicorns().remove(unicorn);
+                unicornPublisher.getPubSubMessagePublisher().publishMessage(unicorn);
             } else {
                 // The DB contains a unicorn that's no longer available in memory
                 Unicorn unicorn = new Builder()
