@@ -3,6 +3,7 @@ package com.thelads.service;
 import com.google.cloud.datastore.Entity;
 import com.google.cloud.datastore.QueryResults;
 import com.thelads.model.Unicorn;
+import com.thelads.model.Unicorn.Builder;
 import com.thelads.model.UnicornCreationRequest;
 import com.thelads.publisher.UnicornPublisher;
 import com.thelads.util.DatastoreQuery;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,13 +78,26 @@ public class UnicornService {
             .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").get().toString())).build());
     }
 
-    public void removeUnicorn(String name) {
-        unicornPublisher
-            .getUnicorns()
+    public void removeUnicorn(String name) throws Exception {
+        Optional<Entity> unicornToKill = getAliveUnicornsWithLatestCoOrdinates()
             .stream()
-            .filter(unicorn -> unicorn.getName().equals(name))
-            .findFirst()
-            .ifPresent(unicorn -> unicorn.setAlive(false));
+            .filter(entity -> entity.getValue("name").get().toString().equals(name))
+            .findFirst();
+
+        if (unicornToKill.isPresent()) {
+            Optional<Unicorn> unicornByName = unicornPublisher.getUnicornByName(name);
+            if (unicornByName.isPresent()) {
+                Unicorn unicorn = unicornByName.get();
+                unicorn.setAlive(false);
+                unicornPublisher.getPubSubMessagePublisher().publishMessage(unicorn);
+                unicornPublisher.getUnicorns().remove(unicorn);
+            } else {
+                // The DB contains a unicorn that's no longer available in memory
+                Unicorn unicorn = new Builder().setName(name).build();
+                unicorn.setAlive(false);
+                unicornPublisher.getPubSubMessagePublisher().publishMessage(unicorn);
+            }
+        }
     }
 
     public List<String> getAliveUnicorns() {

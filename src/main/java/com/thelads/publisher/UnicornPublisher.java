@@ -10,9 +10,11 @@ import com.google.protobuf.ByteString;
 import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
 
+import com.thelads.api.MessagePublisher;
 import com.thelads.model.Unicorn;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -34,6 +36,26 @@ public class UnicornPublisher {
     private ObjectMapper mapper = new ObjectMapper();
     private Publisher publisher;
 
+    private final MessagePublisher<Unicorn> pubSubMessagePublisher = unicorn -> {
+        // convert message to bytes
+        ByteString data = ByteString.copyFromUtf8(mapper.writeValueAsString(unicorn));
+        PubsubMessage pubsubMessage = PubsubMessage.newBuilder()
+            .setData(data)
+            .build();
+
+        // Schedule a message to be published. Messages are automatically batched.
+        ApiFuture<String> future = publisher.publish(pubsubMessage);
+        ApiFutures.addCallback(future, new ApiFutureCallback<String>() {
+            public void onSuccess(String messageId) {
+                System.out.println(unicorn.getName() + ": Published with message id: " + messageId);
+            }
+
+            public void onFailure(Throwable t) {
+                System.out.println(unicorn.getName() + ": Failed to publish. Reason: " + t);
+            }
+        }, directExecutor());
+    };
+
     public UnicornPublisher() throws IOException {
         ProjectTopicName topicName = ProjectTopicName.of(PROJECT_ID, TOPIC_ID);
         publisher = Publisher.newBuilder(topicName).build();
@@ -50,23 +72,7 @@ public class UnicornPublisher {
 
         for (Unicorn unicorn : unicorns) {
             unicorn.move();
-            // convert message to bytes
-            ByteString data = ByteString.copyFromUtf8(mapper.writeValueAsString(unicorn));
-            PubsubMessage pubsubMessage = PubsubMessage.newBuilder()
-                .setData(data)
-                .build();
-
-            // Schedule a message to be published. Messages are automatically batched.
-            ApiFuture<String> future = publisher.publish(pubsubMessage);
-            ApiFutures.addCallback(future, new ApiFutureCallback<String>() {
-                public void onSuccess(String messageId) {
-                    System.out.println(unicorn.getName() + ": Published with message id: " + messageId);
-                }
-
-                public void onFailure(Throwable t) {
-                    System.out.println(unicorn.getName() + ": Failed to publish. Reason: " + t);
-                }
-            }, directExecutor());
+            pubSubMessagePublisher.publishMessage(unicorn);
         }
     }
 
@@ -81,5 +87,16 @@ public class UnicornPublisher {
 
     public List<Unicorn> getUnicorns() {
         return unicorns;
+    }
+
+    public MessagePublisher<Unicorn> getPubSubMessagePublisher() {
+        return pubSubMessagePublisher;
+    }
+
+    public Optional<Unicorn> getUnicornByName(String name) {
+        return unicorns
+            .stream()
+            .filter(unicorn -> unicorn.getName().equals(name))
+            .findFirst();
     }
 }
