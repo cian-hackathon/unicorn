@@ -87,6 +87,11 @@ $("#next").on("click", function() {
         data: data,
         success: function(r){
             console.log(r);
+            showToast("Unicorn added successfully!");
+            $("#addUnicornModal").css("display", "none");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            showToast("Failed to add unicorn. Check logs for details.");
         }
     });
     return false; // this one
@@ -103,12 +108,14 @@ $("#kill_button").on('click', function() {
         method: "DELETE",
         success: function (r) {
             console.log(r);
+            showToast("Unicorn killed successfully!");
+            $("#killUnicornModal").css("display", "none");
         },
         error: function (jqXHR, textStatus, errorThrown) {
             // Request failed. Show error message to user.
             // errorThrown has error message, or "timeout" in case of timeout.
             console.log(jqXHR.responseText);
-            alert(errorThrown);
+            showToast("Unable to kill unicorn. Check logs and try killing harder.");
         }
     })
 });
@@ -189,4 +196,21 @@ $(window).click(function(event) {
 });
 /*
   END MODAL LOGIC
+ */
+
+/*
+  START TOAST LOGIC
+ */
+function showToast(message) {
+
+    var x = document.getElementById("toastBar");
+    // Add the "show" class to DIV
+    x.className = "show";
+    x.innerHTML = message;
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+/*
+  END TOAST LOGIC
  */
