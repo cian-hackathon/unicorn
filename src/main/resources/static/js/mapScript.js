@@ -83,7 +83,6 @@ $("#next").on("click", function() {
         url: "/unicorn",
         method: "post",
         contentType:"application/json; charset=utf-8",
-        dataType:"json",
         data: data,
         success: function(r){
             console.log(r);
