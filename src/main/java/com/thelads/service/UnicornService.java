@@ -93,7 +93,10 @@ public class UnicornService {
                 unicornPublisher.getUnicorns().remove(unicorn);
             } else {
                 // The DB contains a unicorn that's no longer available in memory
-                Unicorn unicorn = new Builder().setName(name).build();
+                Unicorn unicorn = new Builder()
+                    .setName(name)
+                    .setStatusTime(LocalDateTime.now().toString())
+                    .build();
                 unicorn.setAlive(false);
                 unicornPublisher.getPubSubMessagePublisher().publishMessage(unicorn);
             }
