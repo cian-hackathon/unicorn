@@ -91,7 +91,7 @@ public class UnicornService {
             if (unicornByName.isPresent()) {
                 Unicorn unicorn = unicornByName.get();
                 unicorn.setAlive(false);
-                Thread.sleep(6000);
+                Thread.sleep(11000);
                 unicornPublisher.getUnicorns().remove(unicorn);
             } else {
                 // The DB contains a unicorn that's no longer available in memory
