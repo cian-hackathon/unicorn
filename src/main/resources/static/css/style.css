@@ -9,9 +9,19 @@
     position: fixed;
 }
 
-#container {
+#logo-container {
     position: fixed;
     margin-top: 150px;
+}
+
+#controls {
+    position: fixed;
+    margin-top: 400px;
+    margin-left: 25px;
+}
+
+#killUnicornButton {
+    width: 130px;
 }
 
 .demo-card-wide.mdl-card {

@@ -163,6 +163,19 @@ killUnicornButton.click(function() {
     killUnicornModal.css("display", "block");
 });
 
+// Change button text on kill unicorn button hover
+killUnicornButton.hover(
+    function() {
+        var $this = $(this); // cache initial text
+        $this.data('initialText', $this.text());
+        $this.text(":(");
+    },
+    function() {
+        var $this = $(this); // caching $(this)
+        $this.text($this.data('initialText'));
+    }
+);
+
 // When the user clicks anywhere outside of the modal, close it
 $(window).click(function(event) {
     if ($(event.target).is(addUnicornModal)) {
