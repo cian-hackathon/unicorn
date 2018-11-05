@@ -148,3 +148,36 @@ window.onload = function () {
     }, 500 );
 };
 
+/*
+  BEGIN MODAL LOGIC
+ */
+var addUnicornModal = $("#addUnicornModal");
+var killUnicornModal = $("#killUnicornModal");
+
+// Get the button that opens the modal
+var addUnicornButton = $("#addUnicornButton");
+var killUnicornButton = $("#killUnicornButton");
+
+// When the user clicks the button, open the modal
+addUnicornButton.click(function() {
+    addUnicornModal.css("display", "block");
+});
+
+killUnicornButton.click(function() {
+    killUnicornModal.css("display", "block");
+});
+
+// When the user clicks anywhere outside of the modal, close it
+$(window).click(function(event) {
+    if ($(event.target).is(addUnicornModal)) {
+        console.log("Killing add modal");
+        addUnicornModal.css("display", "none");
+    }
+    if ($(event.target).is(killUnicornModal)) {
+        console.log("Killing kill modal");
+        killUnicornModal.css("display", "none");
+    }
+});
+/*
+  END MODAL LOGIC
+ */
