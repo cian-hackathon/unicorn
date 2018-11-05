@@ -34,7 +34,7 @@ public class UnicornController {
 
     @DeleteMapping("/remove")
     @ResponseStatus(HttpStatus.OK)
-    public void removeUnicorn(@RequestParam String name) {
+    public void removeUnicorn(@RequestParam String name) throws Exception {
         unicornService.removeUnicorn(name);
     }
 
