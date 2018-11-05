@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,6 +79,7 @@ public class UnicornService {
             .setMagicPoints(Integer.valueOf(entity.getValue("magicPoints").get().toString())).build());
     }
 
+    @Async
     public void removeUnicorn(String name) throws Exception {
         Optional<Entity> unicornToKill = getAliveUnicornsWithLatestCoOrdinates()
             .stream()
@@ -90,6 +92,7 @@ public class UnicornService {
                 Unicorn unicorn = unicornByName.get();
                 unicorn.setAlive(false);
                 unicornPublisher.getUnicorns().remove(unicorn);
+                Thread.sleep(5000);
                 unicornPublisher.getPubSubMessagePublisher().publishMessage(unicorn);
             } else {
                 // The DB contains a unicorn that's no longer available in memory
