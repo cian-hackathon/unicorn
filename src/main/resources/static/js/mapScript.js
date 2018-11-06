@@ -119,12 +119,15 @@ $("#kill_button").on('click', function() {
     })
 });
 
-$("#aliveUnicornName").onclick(function () {
+$("#aliveUnicornName").on('click', function() {
     $.ajax({
         url: "/unicorn/alive",
         method: "get",
         success: function (data, text) {
             console.log(data);
+        },
+        error: function (request, status, error) {
+            console.log(request.responseText);
         }
     })
 });
