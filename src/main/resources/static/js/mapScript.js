@@ -126,9 +126,7 @@ function populateAliveUnicorns(data) {
 
     for (var i = 0; i < data.length; i++) {
         var name = data[i];
-        document.getElementById('aliveUnicornNameList').appendChild(
-            '<li class="mdl-menu__item" data-val='  + name + '>' + name  + '</li>'
-        );
+        $('#aliveUnicornNameList ul').append('<li class="mdl-menu__item" data-val=' + name + '>' + name + '</li>');
     }
 
 }
