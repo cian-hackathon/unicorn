@@ -119,6 +119,16 @@ $("#kill_button").on('click', function() {
     })
 });
 
+$("#aliveUnicornName").onclick(function () {
+    $.ajax({
+        url: "/unicorn/alive",
+        method: "get",
+        success: function (data, text) {
+            console.log(data);
+        }
+    })
+});
+
 window.onload = function () {
 
     var l = Snap('#logo');
