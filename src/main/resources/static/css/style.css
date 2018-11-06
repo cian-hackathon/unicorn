@@ -20,6 +20,10 @@
     margin-left: 25px;
 }
 
+#addUnicornButton {
+    width: 130px;
+}
+
 #killUnicornButton {
     width: 130px;
 }
@@ -46,21 +50,13 @@ html,body {
     justify-content: left;
 }
 
-.name{
-    diplay: flex;
-}
-
-
 .mdl-button {
-// outline: red solid 5px;
     margin-left: 10px ;
-
 }
+
 .demo-card-wide {
     height: 200px;
-// outline: limegreen 10px solid;
 }
-
 
 .demo-card-wide > .mdl-card__title {
     color: #fff;
@@ -77,7 +73,6 @@ html,body {
 .demo-card-wide > .mdl-card__menu {
     color: #fff;
 }
-
 
 .mycard {
     height: 350px;
@@ -115,7 +110,7 @@ html,body {
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 80%;
+    width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
