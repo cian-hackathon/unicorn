@@ -137,7 +137,7 @@ window.onload = function () {
     function generateRandomTitle(i, logoRandom) {
         setTimeout( function() {
             logoTitleContainer.attr({ text: logoRandom });
-        }, i*70 );
+        }, i*100 );
     }
 
     for( var i=0; i < logoTitle.length+1; i++ ) {

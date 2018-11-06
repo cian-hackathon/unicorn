@@ -16,28 +16,29 @@
     <link href='//fonts.googleapis.com/css?family=Dosis:400,600' rel='stylesheet' type='text/css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Metrophobic" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
 <div id="header">
-    <img src="images/leffe-unicorn.png" height="200" width="200">
+    <img src="images/leffe-unicorn.png" height="200" width="200" class="animated bounceInDown">
 </div>
 
 <div id="logo-container">
-    <svg xmlns="http://www.w3.org/2000/svg" id="logo" viewBox="0 0 2000 600" width="350px"></svg>
-    <div style="font-family:'Dosis'; font-weight:bold; color:#888; margin-top:20px; margin-left: 28px">made with <span style="color:rgb(199, 59, 84)">&#9829;</span> by <a style="color:#999;text-decoration:none;border-bottom:1px dashed #555" href="http://imbibe.com/wp-content/uploads/beer-cheers-783x375.jpg" title="the lads" target="_blank">the lads</a></div>
+    <svg xmlns="http://www.w3.org/2000/svg" id="logo" viewBox="0 0 2000 600" width="350px" class="animated bounceInDown"></svg>
+    <div class="animated fadeIn delay-1s" style="font-family:'Dosis'; font-weight:bold; color:#888; margin-top:20px; margin-left: 28px">made with <span style="color:rgb(199, 59, 84)">&#9829;</span> by <a style="color:#999;text-decoration:none;border-bottom:1px dashed #555" href="http://imbibe.com/wp-content/uploads/beer-cheers-783x375.jpg" title="the lads" target="_blank">the lads</a></div>
 </div>
 
 <div id="controls">
-    <button id="addUnicornButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add Unicorn</button>
+    <button id="addUnicornButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent animated bounceInLeft">Add Unicorn</button>
     <br>
     <br>
-    <button id="killUnicornButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Kill Unicorn</button>
+    <button id="killUnicornButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent animated bounceInLeft">Kill Unicorn</button>
 </div>
 
 
-<div id="map"></div>
+<div id="map" class="animated bounceInDown"></div>
 
 <!-- The Modal -->
 <div id="addUnicornModal" class="modal">
