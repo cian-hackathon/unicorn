@@ -17,52 +17,59 @@ var myIcon = L.icon({
     popupAnchor: [-3, -76]
 });
 
+var tracking = false;
 var markers = [];
 
 function getUnicorns() {
-    $.ajax({
-        type: "get",
-        url: "/unicorn/recent",
-        success: function (data, text) {
-            console.log(data);
-            // Remove old markers
-            for (var j = 0; j < markers.length; j++) {
-                map.removeLayer(markers[j]);
-            }
-            markers.length = 0;
+    if (tracking) {
+        $.ajax({
+            type: "get",
+            url: "/unicorn/recent",
+            success: function (data, text) {
+                console.log(data);
+                // Remove old markers
+                clearMarkers();
 
-            // Create new markers
-            for (var i = 0; i < data.length; i++) {
-                var unicorn = data[i];
-                var latitude = unicorn["latitude"];
-                var longitude = unicorn["longitude"];
-                var name = unicorn["name"];
-                var distance = unicorn["distance"];
-                var health = unicorn["healthPoints"];
-                var magic = unicorn["magicPoints"];
-                var updateTime = unicorn["statusTime"];
-                var marker = L.marker([latitude, longitude], {icon: myIcon});
-                var tooltip = L.tooltip({sticky: true});
-                tooltip.setContent(
-                    '<b>Name: </b>' + name +
-                    '</br><b>Distance: </b>' + distance +
-                    '</br><b>Latitude: </b>' + latitude +
-                    '</br><b>Longitude: </b>' + longitude +
-                    '</br><b>Health: </b>' + health +
-                    '</br><b>Magic: </b>' + magic +
-                    '</br><b>Last Update: </b>' + updateTime
-                );
-                marker.bindTooltip(tooltip).openTooltip();
-                marker.addTo(map);
-                markers.push(marker);
+                // Create new markers
+                for (var i = 0; i < data.length; i++) {
+                    var unicorn = data[i];
+                    var latitude = unicorn["latitude"];
+                    var longitude = unicorn["longitude"];
+                    var name = unicorn["name"];
+                    var distance = unicorn["distance"];
+                    var health = unicorn["healthPoints"];
+                    var magic = unicorn["magicPoints"];
+                    var updateTime = unicorn["statusTime"];
+                    var marker = L.marker([latitude, longitude], {icon: myIcon});
+                    var tooltip = L.tooltip({sticky: true});
+                    tooltip.setContent(
+                        '<b>Name: </b>' + name +
+                        '</br><b>Distance: </b>' + distance +
+                        '</br><b>Latitude: </b>' + latitude +
+                        '</br><b>Longitude: </b>' + longitude +
+                        '</br><b>Health: </b>' + health +
+                        '</br><b>Magic: </b>' + magic +
+                        '</br><b>Last Update: </b>' + updateTime
+                    );
+                    marker.bindTooltip(tooltip).openTooltip();
+                    marker.addTo(map);
+                    markers.push(marker);
+                }
+            },
+            error: function (request, status, error) {
+                console.log(request.responseText);
             }
-        },
-        error: function (request, status, error) {
-            console.log(request.responseText);
-        }
-    });
+        });
+    }
 }
 var interval = self.setInterval(function(){getUnicorns()}, 3000);
+
+function clearMarkers() {
+    for (var j = 0; j < markers.length; j++) {
+        map.removeLayer(markers[j]);
+    }
+    markers.length = 0;
+}
 
 function convertFormToJSON($form){
     var array = $form.serializeArray();
@@ -74,6 +81,19 @@ function convertFormToJSON($form){
 
     return JSON.stringify(json);
 }
+
+$("#trackButton").on("click", function() {
+    if (tracking === true) {
+        tracking = false;
+        clearMarkers();
+        $(this).css("background-color", "crimson");
+        $(this).text("Tracking: Off");
+    } else {
+        tracking = true;
+        $(this).css("background-color", "green");
+        $(this).text("Tracking: On");
+    }
+});
 
 $("#next").on("click", function() {
     var $form = $("#add-unicorn-form");

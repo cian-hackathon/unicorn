@@ -28,6 +28,11 @@
     width: 130px;
 }
 
+#trackButton {
+    width: 150px;
+    background-color: crimson;
+}
+
 .demo-card-wide.mdl-card {
     width: 640px;
     height: 300px;
@@ -35,6 +40,7 @@
 
 html,body {
     width: auto;
+    height: auto;
     padding: 1em 1em;
     background: #222;
 }
