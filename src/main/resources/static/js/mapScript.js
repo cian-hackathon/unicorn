@@ -62,41 +62,44 @@ function getUnicorns() {
         }
     });
 }
-var interval = self.setInterval(function(){getUnicorns()}, 3000);
 
-function convertFormToJSON($form){
+var interval = self.setInterval(function () {
+    getUnicorns()
+}, 3000);
+
+function convertFormToJSON($form) {
     var array = $form.serializeArray();
     var json = {};
 
-    $.each(array, function() {
+    $.each(array, function () {
         json[this.name] = this.value || '';
     });
 
     return JSON.stringify(json);
 }
 
-$("#next").on("click", function() {
+$("#next").on("click", function () {
     var $form = $("#add-unicorn-form");
     var data = convertFormToJSON($form);
     console.log(data);
     $.ajax({
         url: "/unicorn",
         method: "post",
-        contentType:"application/json; charset=utf-8",
+        contentType: "application/json; charset=utf-8",
         data: data,
-        success: function(r){
+        success: function (r) {
             console.log(r);
             showToast("Unicorn added successfully!");
             $("#addUnicornModal").css("display", "none");
         },
-        error: function(jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR, textStatus, errorThrown) {
             showToast("Failed to add unicorn. Check logs for details.");
         }
     });
     return false; // this one
 });
 
-$("#kill_button").on('click', function() {
+$("#kill_button").on('click', function () {
 
     var $form = $("#remove-unicorn-form");
     var data = $form.serializeArray()[0].value;
@@ -119,12 +122,24 @@ $("#kill_button").on('click', function() {
     })
 });
 
-$("#aliveUnicornName").on('click', function() {
+function populateAliveUnicorns(data) {
+
+    for (var i = 0; i < data.length; i++) {
+        var name = data[i];
+        document.getElementById('aliveUnicornNameList').appendChild(
+            '<li class="mdl-menu__item" data-val='  + name + '>' + name  + '</li>'
+        );
+    }
+
+}
+
+$("#aliveUnicornName").on('click', function () {
     $.ajax({
         url: "/unicorn/alive",
         method: "get",
         success: function (data, text) {
             console.log(data);
+            populateAliveUnicorns(data);
         },
         error: function (request, status, error) {
             console.log(request.responseText);
@@ -148,14 +163,14 @@ window.onload = function () {
     });
 
     function generateRandomTitle(i, logoRandom) {
-        setTimeout( function() {
-            logoTitleContainer.attr({ text: logoRandom });
-        }, i*70 );
+        setTimeout(function () {
+            logoTitleContainer.attr({text: logoRandom});
+        }, i * 70);
     }
 
-    for( var i=0; i < logoTitle.length+1; i++ ) {
+    for (var i = 0; i < logoTitle.length + 1; i++) {
         logoRandom = logoTitle.substr(0, i);
-        for( var j=i; j < logoTitle.length; j++ ) {
+        for (var j = i; j < logoTitle.length; j++) {
             logoRandom += possible.charAt(Math.floor(Math.random() * possible.length));
         }
         generateRandomTitle(i, logoRandom);
@@ -174,29 +189,29 @@ var addUnicornButton = $("#addUnicornButton");
 var killUnicornButton = $("#killUnicornButton");
 
 // When the user clicks the button, open the modal
-addUnicornButton.click(function() {
+addUnicornButton.click(function () {
     addUnicornModal.css("display", "block");
 });
 
-killUnicornButton.click(function() {
+killUnicornButton.click(function () {
     killUnicornModal.css("display", "block");
 });
 
 // Change button text on kill unicorn button hover
 killUnicornButton.hover(
-    function() {
+    function () {
         var $this = $(this); // cache initial text
         $this.data('initialText', $this.text());
         $this.text(":(");
     },
-    function() {
+    function () {
         var $this = $(this); // caching $(this)
         $this.text($this.data('initialText'));
     }
 );
 
 // When the user clicks anywhere outside of the modal, close it
-$(window).click(function(event) {
+$(window).click(function (event) {
     if ($(event.target).is(addUnicornModal)) {
         console.log("Killing add modal");
         addUnicornModal.css("display", "none");
@@ -221,8 +236,11 @@ function showToast(message) {
     x.innerHTML = message;
 
     // After 3 seconds, remove the show class from DIV
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    setTimeout(function () {
+        x.className = x.className.replace("show", "");
+    }, 3000);
 }
+
 /*
   END TOAST LOGIC
  */
